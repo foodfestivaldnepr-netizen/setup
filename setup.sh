@@ -342,7 +342,7 @@ main() {
                 fi
                 ;;
 
-            $'\x1b[C'|$'\n'|$'\r')  # → Right  or  Enter
+            ''|$'\x1b[C'|$'\n'|$'\r')  # → Right  or  Enter ('' = \n stripped by $())
                 if [[ $panel -eq 0 ]]; then
                     # Last category = "Exit Sanctum"
                     if (( cat_idx == ${#CATS[@]} - 1 )); then
