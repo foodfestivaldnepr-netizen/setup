@@ -154,11 +154,11 @@ BANNER
             fi
         fi
 
-        printf '%b  ║ %b%-*s%b %b║ %b%-*s%b %b║%b\n' \
+        printf '%b  ║ %b%-*.*s%b %b║ %b%-*.*s%b %b║%b\n' \
             "$DR" \
-            "$lc" "$L"  "$lt" "$NC" \
+            "$lc" "$L"  "$L"  "$lt" "$NC" \
             "$DR" \
-            "$rc" "$RR" "$rt" "$NC" \
+            "$rc" "$RR" "$RR" "$rt" "$NC" \
             "$DR" "$NC"
     done
 
@@ -166,8 +166,8 @@ BANNER
     printf '%b  ╠' "$DR"; _hl $LBW; printf '╩'; _hl $RBW; printf '╣%b\n' "$NC"
 
     # ── System-info row ────────────────────────────────────────────────
-    printf '%b  ║ %b%-*s%b %b║%b\n' \
-        "$DR" "$CY" $((FBW-2)) \
+    printf '%b  ║ %b%-*.*s%b %b║%b\n' \
+        "$DR" "$CY" $((FBW-2)) $((FBW-2)) \
         "CPU: $SYS_CPU   RAM: $SYS_RAM   DISK: $SYS_DISK" \
         "$NC" "$DR" "$NC"
 
@@ -175,8 +175,8 @@ BANNER
     printf '%b  ╠' "$DR"; _hl $FBW; printf '╣%b\n' "$NC"
 
     # ── Key-help row ───────────────────────────────────────────────────
-    printf '%b  ║ %b%-*s%b %b║%b\n' \
-        "$DR" "$DW" $((FBW-2)) \
+    printf '%b  ║ %b%-*.*s%b %b║%b\n' \
+        "$DR" "$DW" $((FBW-2)) $((FBW-2)) \
         "[↑↓] Navigate   [→/Enter] Select   [←/h] Back   [q] Quit" \
         "$NC" "$DR" "$NC"
 
