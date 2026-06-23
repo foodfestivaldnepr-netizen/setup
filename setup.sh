@@ -4,7 +4,7 @@
 #  In Nomine Imperatoris. In the name of the Machine God.
 # ══════════════════════════════════════════════════════════════════════════════
 
-# Require bash — process substitution and arrays are bash-only
+# Require bash — arrays and PIPESTATUS are bash-only
 if [ -z "$BASH_VERSION" ]; then
     echo "This rite requires bash. Run: curl -fsSL <URL> | bash"
     exit 1
@@ -22,6 +22,7 @@ G=$'\033[1;33m'       # Sacred Gold
 DW=$'\033[2;37m'      # Dim White / Parchment
 DR=$'\033[2;31m'      # Dim Red — borders
 CY=$'\033[1;36m'      # Cyan — system readouts
+GN=$'\033[1;32m'      # Green — success
 SEL=$'\033[1;37;41m'  # Selected: white on blood-red
 NC=$'\033[0m'         # Reset
 
@@ -79,8 +80,8 @@ read_key() {
 #
 L=23            # left panel content width
 RR=47           # right panel content width
-LBW=$((L+2))   # left border section   = 25  (between ╔ and ╦)
-RBW=$((RR+2))  # right border section  = 49  (between ╦ and ╗)
+LBW=$((L+2))        # left border section   = 25  (between ╔ and ╦)
+RBW=$((RR+2))       # right border section  = 49  (between ╦ and ╗)
 FBW=$((LBW+RBW+1))  # full single-row width = 75  (between ╠ and ╣)
 
 _hl() {   # print $1 horizontal-rule dashes
@@ -184,33 +185,118 @@ BANNER
     printf '%b  ╚' "$DR"; _hl $FBW; printf '╝%b\n' "$NC"
 }
 
+# ── Confirmation overlay (drawn on top of the live TUI) ────────────────────
+confirm_overlay() {
+    local label="$1"
+    local bw=52 bh=7 i
+
+    local rows cols
+    rows=$(tput lines 2>/dev/null || echo 24)
+    cols=$(tput cols  2>/dev/null || echo 80)
+
+    local br=$(( (rows - bh) / 2 ))
+    local bc=$(( (cols - bw) / 2 ))
+    local inner=$((bw - 4))   # content width between "│ " and " │"
+
+    # Top border
+    tput cup $br $bc
+    printf '%b┌' "$G"
+    for (( i=0; i<bw-2; i++ )); do printf '─'; done
+    printf '┐%b' "$NC"
+
+    # Title
+    tput cup $((br+1)) $bc
+    printf '%b│ %b%-*s %b│%b' "$G" "$G" $inner "  CONFIRM SELECTION" "$G" "$NC"
+
+    # Blank
+    tput cup $((br+2)) $bc
+    printf '%b│%b%-*s%b│%b' "$G" "$NC" $((bw-2)) "" "$G" "$NC"
+
+    # Label (truncated to fit)
+    tput cup $((br+3)) $bc
+    printf '%b│ %b%-*.*s%b │%b' "$G" "$R" $inner $inner "  $label" "$NC" "$G" "$NC"
+
+    # Blank
+    tput cup $((br+4)) $bc
+    printf '%b│%b%-*s%b│%b' "$G" "$NC" $((bw-2)) "" "$G" "$NC"
+
+    # y/n prompt
+    tput cup $((br+5)) $bc
+    printf '%b│ %b%-*s %b│%b' "$G" "$DW" $inner "[y] to continue   [n] to abort" "$G" "$NC"
+
+    # Bottom border
+    tput cup $((br+6)) $bc
+    printf '%b└' "$G"
+    for (( i=0; i<bw-2; i++ )); do printf '─'; done
+    printf '┘%b' "$NC"
+
+    _cnorm
+
+    local key
+    while true; do
+        key=$(read_key) || return 1
+        case "$key" in
+            y|Y)                          _civis; return 0 ;;
+            n|N|q|Q|$'\x1b'|$'\x1b[D')  _civis; return 1 ;;
+        esac
+    done
+}
+
 # ── Execute a sanctioned rite ──────────────────────────────────────────────
 run_rite() {
     local cmd="$1" label="$2"
+    local tmplog
+    tmplog=$(mktemp)
 
     _rmcup
     _cnorm
 
-    printf '\n%b  ╔══════════════════════════════════════════════════╗\n' "$G"
-    printf   '  ║  ⚙  INITIATING RITE OF THE OMNISSIAH            ║\n'
-    printf   '  ║  %-49s║\n' "$label"
-    printf   '  ║  The Machine God sanctifies your device...      ║\n'
-    printf   '  ╚══════════════════════════════════════════════════╝%b\n\n' "$NC"
+    # ── Running command header ──────────────────────────────────────────
+    printf '%b\n  ╔════════════════════════════════════════════════════════════╗\n' "$G"
+    printf   '  ║  ⚙  RUNNING COMMAND                                      ║\n'
+    printf   '  ╚════════════════════════════════════════════════════════════╝%b\n\n' "$NC"
+
+    local exit_code=0
 
     if [[ "$cmd" == "ALL" ]]; then
         local s
         for s in printer.sh rdp.sh printmanager.sh; do
-            printf '%b  ▸ Invoking: %s%b\n' "$G" "$s" "$NC"
-            curl -fsSL "$BASE_URL/$s" | bash
+            printf '%b  ▸ %s%b\n' "$G" "$s" "$NC"
+            curl -fsSL "$BASE_URL/$s" | bash 2>&1 | tee -a "$tmplog"
+            local s_exit=${PIPESTATUS[1]}
+            (( s_exit != 0 )) && exit_code=$s_exit
             echo
         done
     else
-        curl -fsSL "$BASE_URL/$cmd" | bash
+        curl -fsSL "$BASE_URL/$cmd" | bash 2>&1 | tee -a "$tmplog"
+        exit_code=${PIPESTATUS[1]}
     fi
 
-    printf '\n%b  ══ Rite complete. The Machine God is pleased. ══%b\n' "$G" "$NC"
-    printf '%b  Press any key to return to the Sanctum...%b ' "$DW" "$NC"
-    IFS= read -rsn1 <&3 2>/dev/null || true
+    # ── Result footer ───────────────────────────────────────────────────
+    echo
+    if [[ $exit_code -eq 0 ]]; then
+        printf '%b  ╔════════════════════════════════════════════════════════════╗\n' "$GN"
+        printf   '  ║  SUCCESS — The Machine God is pleased. Rite complete.    ║\n'
+        printf   '  ╚════════════════════════════════════════════════════════════╝%b\n' "$NC"
+    else
+        printf '%b  ╔════════════════════════════════════════════════════════════╗\n' "$R"
+        printf   "  ║  FAILED (exit $exit_code) — The Omnissiah demands perfection.      ║\n"
+        printf   '  ╚════════════════════════════════════════════════════════════╝%b\n' "$NC"
+    fi
+
+    printf '\n%b  Press [Enter] to return to Sanctum   [l] Save log%b ' "$DW" "$NC"
+    local k
+    IFS= read -rsn1 k <&3 2>/dev/null || true
+
+    if [[ "$k" == 'l' || "$k" == 'L' ]]; then
+        local logfile="$HOME/rite-$(date +%Y%m%d-%H%M%S).log"
+        cp "$tmplog" "$logfile"
+        printf '\n%b  Log saved to: %s%b\n' "$GN" "$logfile" "$NC"
+        printf '%b  Press [Enter] to continue...%b ' "$DW" "$NC"
+        IFS= read -rsn1 <&3 2>/dev/null || true
+    fi
+
+    rm -f "$tmplog"
     echo
 
     _smcup
@@ -267,7 +353,11 @@ main() {
                     item_idx=0
                 else
                     if (( ${#cur_items[@]} > 0 )); then
-                        run_rite "${cur_cmds[$item_idx]}" "${cur_items[$item_idx]}"
+                        # Show confirmation overlay on top of current TUI,
+                        # then run the rite only if the user confirms.
+                        if confirm_overlay "${cur_items[$item_idx]}"; then
+                            run_rite "${cur_cmds[$item_idx]}" "${cur_items[$item_idx]}"
+                        fi
                     fi
                 fi
                 ;;
