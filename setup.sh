@@ -253,17 +253,16 @@ run_rite() {
 
     # ── Running command header ──────────────────────────────────────────
     printf '%b\n  ╔════════════════════════════════════════════════════════════╗\n' "$G"
-    printf   '  ║  ⚙  RUNNING COMMAND                                      ║\n'
+    printf   '  ║  >> RUNNING COMMAND                                        ║\n'
     printf   '  ╚════════════════════════════════════════════════════════════╝%b\n\n' "$NC"
 
-    local exit_code=0
+    local exit_code=0 s_exit s
 
     if [[ "$cmd" == "ALL" ]]; then
-        local s
         for s in printer.sh rdp.sh printmanager.sh; do
             printf '%b  ▸ %s%b\n' "$G" "$s" "$NC"
             curl -fsSL "$BASE_URL/$s" | bash 2>&1 | tee -a "$tmplog"
-            local s_exit=${PIPESTATUS[1]}
+            s_exit=${PIPESTATUS[1]}
             (( s_exit != 0 )) && exit_code=$s_exit
             echo
         done
@@ -276,11 +275,11 @@ run_rite() {
     echo
     if [[ $exit_code -eq 0 ]]; then
         printf '%b  ╔════════════════════════════════════════════════════════════╗\n' "$GN"
-        printf   '  ║  SUCCESS — The Machine God is pleased. Rite complete.    ║\n'
+        printf '%b  ║%-60.60s║\n' "$GN" "  SUCCESS — The Machine God is pleased. Rite complete."
         printf   '  ╚════════════════════════════════════════════════════════════╝%b\n' "$NC"
     else
         printf '%b  ╔════════════════════════════════════════════════════════════╗\n' "$R"
-        printf   "  ║  FAILED (exit $exit_code) — The Omnissiah demands perfection.      ║\n"
+        printf '%b  ║%-60.60s║\n' "$R" "  FAILED (exit $exit_code) — The Omnissiah demands perfection."
         printf   '  ╚════════════════════════════════════════════════════════════╝%b\n' "$NC"
     fi
 
