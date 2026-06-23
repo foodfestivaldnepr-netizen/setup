@@ -94,39 +94,19 @@ _hl() {   # print $1 horizontal-rule dashes
 draw() {
     _clear
 
-    # ── Banner: Adeptus Mechanicus Tech-Priest ────────────────────────
-    local _h="$DR" _c="$CY" _t="$DW"
-    printf '%b' "$_h"
+    # ── Banner: Adeptus Mechanicus Horizontal Fresca ─────────────────
+    printf '%b' "$DR"
     printf '%s\n' \
-        '                      RRRRRRRRRRRRRRRRR' \
-        '                   RRRRrrrrrrrrrrrrrRRRRRR' \
-        '                 RRRrrrrrrrrrrrrrrrrrrrRRRRRR' \
-        '               RRRrrrrrrrrrrrrrrrrrrrrrrrRRRRRRR' \
-        '              RRrrrrrrrrrrrrrrrrrrrrrrrrrrRRRRRRRR' \
-        '             RRrrrrrrr                 rrrrrrRRRRRRR' \
-        '            RRrrrrrr                     rrrrrRRRRRRR'
-    printf '%b           RRrrrrrr   %b=======%b   %b=======%b   rrrrRRRRRRR\n' \
-        "$_h" "$_c" "$_h" "$_c" "$_h"
-    printf '%b           RRrrrrrr   %b=======%b   %b=======%b   rrrrRRRRRRR\n' \
-        "$_h" "$_c" "$_h" "$_c" "$_h"
-    printf '%b%s\n' "$_h" '           RRrrrrrr                       rrrrRRRRRRR'
-    printf '%b           RRrrrrrr      %buhhhh...%b         rrrrRRRRRRR\n' "$_h" "$_t" "$_h"
-    printf '%b           RRrrrrrr    %bCan I help you?%b    rrrrRRRRRRR\n' "$_h" "$_t" "$_h"
-    printf '%b' "$_h"
+        '  ╔═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╤═╗'
+    printf '  ║ %b.----.%b  %bA D E P T U S  ⊕  M E C H A N I C U S%b                    %b01·10·01%b ║\n' \
+        "$R" "$DR" "$G" "$DR" "$CY" "$DR"
+    printf '  ║ %b|o  o|%b  %b─────────────────────────────────────────────────────────────────%b ║\n' \
+        "$R" "$DR" "$CY" "$DR"
+    printf "  ║ %b\`--^-'%b  %bOMNISSIAH'S SANCTIONED INSTALLATION RITES%b                %b10·01·10%b ║\n" \
+        "$R" "$DR" "$DW" "$DR" "$CY" "$DR"
+    printf '%b' "$DR"
     printf '%s\n' \
-        '           RRrrrrrr                       rrrrRRRRRRR' \
-        '            RRrrrrrrr                  rrrrrRRRRRRRR' \
-        '             RRRrrrrrrrrrrrrrrrrrrrrrrrrrRRRRRRRRR' \
-        '              RRRRrrrrrrrrrrrrrrrrrrrrrRRRRRRRRR'
-    printf '%b' "$GN"
-    printf '%s\n' \
-        '              GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGg' \
-        '             GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGg' \
-        '            GGGGg   GGGGGGGGGGGGGGGGGg   gGGGGg' \
-        '           GGGg       GGGGGGGGGGGGGg       gGGGg' \
-        '          GGg           GGGGGGGGGGg           gGGg' \
-        '         Gg               GGGGGGGg               gGg' \
-        '        g                   GGGGg                   g'
+        '  ╚═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╧═╝'
     printf '%b\n' "$NC"
     printf '%b    "Blessed is the mind too small for doubt"\n\n' "$DW"
 

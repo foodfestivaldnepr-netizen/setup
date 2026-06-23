@@ -39,147 +39,157 @@ STRIP_W = 14
 CSS = b"""
 * { transition: none; }
 
-#rdp-panel { background-color: #1e1e2e; }
-#strip { background-color: #89b4fa; }
+#rdp-panel { background-color: #0d0505; }
+#strip { background-color: #8b0000; }
 
 #login-dialog {
-    background-color: #181825;
-    border-radius: 12px;
+    background-color: #0d0505;
+    border-radius: 0px;
 }
 
 #dialog-header {
-    background-color: #1e1e2e;
-    border-radius: 12px 12px 0 0;
+    background-color: #100808;
+    border-radius: 0px;
     padding: 20px 28px 16px 28px;
-    border-bottom: 1px solid #313244;
+    border-bottom: 1px solid #5a0000;
 }
 
 #dialog-body {
-    background-color: #181825;
+    background-color: #0d0505;
     padding: 24px 28px 20px 28px;
 }
 
 #dialog-footer {
-    background-color: #11111b;
-    border-radius: 0 0 12px 12px;
+    background-color: #080303;
+    border-radius: 0px;
     padding: 14px 28px;
-    border-top: 1px solid #313244;
+    border-top: 1px solid #5a0000;
 }
 
 #title-label {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
-    color: #cdd6f4;
+    color: #c9a84c;
+}
+
+#subtitle-label {
+    font-size: 10px;
+    color: #5a3a1a;
+    letter-spacing: 1px;
 }
 
 #server-label {
-    font-size: 11px;
-    color: #6c7086;
+    font-size: 10px;
+    color: #5a0000;
 }
 
 #field-label {
-    font-size: 11px;
-    color: #a6adc8;
+    font-size: 10px;
+    color: #8b7355;
     margin-bottom: 4px;
+    letter-spacing: 1px;
 }
 
 entry {
-    background-color: #313244;
-    color: #cdd6f4;
-    border: 1px solid #45475a;
-    border-radius: 6px;
+    background-color: #1a0808;
+    color: #d4c9b0;
+    border: 1px solid #5a0000;
+    border-radius: 0px;
     padding: 8px 12px;
     font-size: 13px;
-    caret-color: #89b4fa;
+    caret-color: #8b0000;
     min-height: 0;
 }
 entry:focus {
-    border-color: #89b4fa;
-    background-color: #363653;
+    border-color: #8b0000;
+    background-color: #200808;
 }
 
 #eye-btn {
     background: transparent;
     border: none;
     padding: 4px 6px;
-    color: #6c7086;
-    border-radius: 4px;
+    color: #5a0000;
+    border-radius: 0px;
     min-height: 0;
     min-width: 0;
     font-size: 13px;
 }
 #eye-btn:hover {
-    background: #313244;
-    color: #cdd6f4;
+    background: #1a0808;
+    color: #c9a84c;
 }
 
 #cancel-btn {
     background: transparent;
-    color: #6c7086;
-    border: 1px solid #45475a;
-    border-radius: 6px;
+    color: #5a3a2a;
+    border: 1px solid #3d1a1a;
+    border-radius: 0px;
     padding: 7px 16px;
-    font-size: 12px;
+    font-size: 11px;
     min-height: 0;
+    letter-spacing: 1px;
 }
 #cancel-btn:hover {
-    background: #313244;
-    color: #cdd6f4;
-    border-color: #6c7086;
+    background: #1a0808;
+    color: #d4c9b0;
+    border-color: #5a0000;
 }
 
 #save-btn {
-    background: #313244;
-    color: #a6e3a1;
-    border: 1px solid #a6e3a1;
-    border-radius: 6px;
+    background: #1a0808;
+    color: #c9a84c;
+    border: 1px solid #c9a84c;
+    border-radius: 0px;
     padding: 7px 16px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     min-height: 0;
+    letter-spacing: 1px;
 }
 #save-btn:hover {
-    background: #a6e3a1;
-    color: #1e1e2e;
+    background: #c9a84c;
+    color: #0d0505;
 }
 
 #connect-btn {
-    background: #313244;
-    color: #a6e3a1;
-    border: 1px solid #a6e3a1;
-    border-radius: 6px;
+    background: #3d0000;
+    color: #d4c9b0;
+    border: 1px solid #8b0000;
+    border-radius: 0px;
     padding: 7px 20px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
     min-height: 0;
+    letter-spacing: 1px;
 }
 #connect-btn:hover {
-    background: #a6e3a1;
-    color: #1e1e2e;
+    background: #8b0000;
+    color: #c9a84c;
 }
 
 #saved-label {
     font-size: 11px;
-    color: #a6e3a1;
+    color: #c9a84c;
 }
 
 button {
-    background: #313244;
-    color: #cdd6f4;
-    border: none;
-    border-radius: 4px;
+    background: #1a0808;
+    color: #8b7355;
+    border: 1px solid #3d1a1a;
+    border-radius: 0px;
     padding: 6px 8px;
     font-size: 11px;
     min-height: 0;
 }
-button:hover { background: #45475a; }
-label { color: #cdd6f4; }
+button:hover { background: #2d0a0a; color: #d4c9b0; }
+label { color: #d4c9b0; }
 """
 
 
 class LoginDialog(Gtk.Window):
     def __init__(self):
-        super().__init__(title="RDP Connect")
+        super().__init__(title="ADEPTUS MECHANICUS")
         self.set_name("login-dialog")
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_resizable(False)
@@ -204,13 +214,19 @@ class LoginDialog(Gtk.Window):
 
         title_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
         icon = Gtk.Label()
-        icon.set_markup('<span size="18000">󰒋</span>')
+        icon.set_markup('<span size="18000">⚙</span>')
         title_row.pack_start(icon, False, False, 0)
         title = Gtk.Label()
         title.set_name("title-label")
-        title.set_markup('<span>RDP Connection</span>')
+        title.set_markup('<span>RITE OF REMOTE COGNITION</span>')
         title_row.pack_start(title, False, False, 0)
         header.pack_start(title_row, False, False, 0)
+
+        subtitle = Gtk.Label()
+        subtitle.set_name("subtitle-label")
+        subtitle.set_markup('<span>IN NOMINE OMNISSIAH</span>')
+        subtitle.set_halign(Gtk.Align.START)
+        header.pack_start(subtitle, False, False, 0)
 
         root.pack_start(header, False, False, 0)
 
@@ -221,7 +237,7 @@ class LoginDialog(Gtk.Window):
 
         # Server field
         server_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-        server_lbl = Gtk.Label(label="СЕРВЕР")
+        server_lbl = Gtk.Label(label="NODE ADDRESS")
         server_lbl.set_name("field-label")
         server_lbl.set_halign(Gtk.Align.START)
         server_box.pack_start(server_lbl, False, False, 0)
@@ -234,7 +250,7 @@ class LoginDialog(Gtk.Window):
 
         # Login field
         user_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-        user_lbl = Gtk.Label(label="ЛОГИН")
+        user_lbl = Gtk.Label(label="OPERATOR IDENT")
         user_lbl.set_name("field-label")
         user_lbl.set_halign(Gtk.Align.START)
         user_box.pack_start(user_lbl, False, False, 0)
@@ -247,7 +263,7 @@ class LoginDialog(Gtk.Window):
 
         # Password field with eye toggle
         pass_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=4)
-        pass_lbl = Gtk.Label(label="ПАРОЛЬ")
+        pass_lbl = Gtk.Label(label="CIPHER KEY")
         pass_lbl.set_name("field-label")
         pass_lbl.set_halign(Gtk.Align.START)
         pass_box.pack_start(pass_lbl, False, False, 0)
@@ -276,17 +292,17 @@ class LoginDialog(Gtk.Window):
         self.saved_lbl.set_name("saved-label")
         footer.pack_start(self.saved_lbl, True, True, 0)
 
-        cancel_btn = Gtk.Button(label="Отмена")
+        cancel_btn = Gtk.Button(label="ABORT")
         cancel_btn.set_name("cancel-btn")
         cancel_btn.connect("clicked", lambda _: Gtk.main_quit())
         footer.pack_start(cancel_btn, False, False, 0)
 
-        save_btn = Gtk.Button(label="Сохранить")
+        save_btn = Gtk.Button(label="INSCRIBE")
         save_btn.set_name("save-btn")
         save_btn.connect("clicked", self._on_save)
         footer.pack_start(save_btn, False, False, 0)
 
-        connect_btn = Gtk.Button(label="Подключить")
+        connect_btn = Gtk.Button(label="INITIATE LINK")
         connect_btn.set_name("connect-btn")
         connect_btn.connect("clicked", self._on_connect)
         footer.pack_start(connect_btn, False, False, 0)
@@ -304,7 +320,7 @@ class LoginDialog(Gtk.Window):
 
     def _on_save(self, *_):
         save_credentials(self.server_entry.get_text(), self.user_entry.get_text(), self.pass_entry.get_text())
-        self.saved_lbl.set_text("✓ Сохранено")
+        self.saved_lbl.set_text("✓ INSCRIBED TO COGITATOR")
         GLib.timeout_add(2000, lambda: self.saved_lbl.set_text("") or False)
 
     def _on_connect(self, *_):
@@ -346,15 +362,15 @@ class RDPController:
         self.panel.set_margin_start(6)
         self.panel.set_margin_end(4)
 
-        exit_btn = Gtk.Button(label="✕  exit")
+        exit_btn = Gtk.Button(label="✕  SEVER LINK")
         exit_btn.connect("clicked", lambda _: self.on_exit())
         self.panel.pack_start(exit_btn, True, True, 0)
 
-        hide_btn = Gtk.Button(label="—  hide")
+        hide_btn = Gtk.Button(label="—  CLOAK PANEL")
         hide_btn.connect("clicked", lambda _: self.collapse())
         self.panel.pack_start(hide_btn, True, True, 0)
 
-        self.scale_btn = Gtk.Button(label=f"⊡ {self.scale}%")
+        self.scale_btn = Gtk.Button(label=f"⚙ {self.scale}%")
         self.scale_btn.connect("clicked", self.show_scale_menu)
         self.panel.pack_start(self.scale_btn, True, True, 0)
 
@@ -425,7 +441,7 @@ class RDPController:
 
     def set_scale(self, scale):
         self.scale = scale
-        self.scale_btn.set_label(f"⊡ {scale}%")
+        self.scale_btn.set_label(f"⚙ {scale}%")
         if self.process and self.process.poll() is None:
             self.process.terminate()
         self.launch_rdp()
